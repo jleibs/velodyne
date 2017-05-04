@@ -150,6 +150,11 @@ namespace velodyne_rawdata
         union two_bytes tmp;
         tmp.bytes[0] = raw->blocks[i].data[k];
         tmp.bytes[1] = raw->blocks[i].data[k+1];
+
+        if (DISTANCE_RESOLUTION * static_cast<float>(tmp.uint) <= 0.9) {
+          continue;
+        }
+
         /*condition added to avoid calculating points which are not
           in the interesting defined area (min_angle < area < max_angle)*/
         if ((raw->blocks[i].rotation >= config_.min_angle 
